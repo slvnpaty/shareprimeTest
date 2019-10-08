@@ -1,50 +1,38 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
-import { Voters } from '../model/voters';
-import { VotersService } from '../service/voters.service';
+export interface DialogData {
+  name: string;
+}
 
-import { map, filter } from 'rxjs/operators';
-
-
+/**
+ * @title Dialog Overview
+ */
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-  public voters: Voters = new Voters();
+export class HomeComponent{
+  name: string;
 
   constructor(public dialog: MatDialog,
-    public votersService: VotersService,
-    public route: Router) {
-  }
-
+    public route: Router) {}
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       width: '250px',
-      data: { nome: this.voters.name }
+      data: {name: this.name}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-    console.log("result=====================>",result)
-    if (result != null) {
-        let voter = this.votersService.ReadJsonVoters().pipe(
-          filter(n => n.name === result)
-        )
-        alert(voter)
-        if (voter != null)
-          this.route.navigate(['vote-zone']);
-      }
-    },
-      error => {
+      console.log('The dialog was closed',result);
+      this.name = result;
 
-      });
-  }
 
-  ngOnInit() {
+      
+    });
   }
 
   ListVoters() {
@@ -54,6 +42,7 @@ export class HomeComponent implements OnInit {
   vote() {
     this.openDialog();
   }
+
 }
 
 @Component({
@@ -64,7 +53,7 @@ export class DialogOverviewExampleDialog {
 
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: Voters) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onNoClick(): void {
     this.dialogRef.close();
