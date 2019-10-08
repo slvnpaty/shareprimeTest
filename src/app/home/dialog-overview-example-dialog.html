@@ -1,8 +1,11 @@
 <mat-card>
   <mat-card-content>
     <mat-form-field>
-      <input matInput placeholder="Qual o seu primeiro nome?" [(ngModel)]="voter.name" />
+      <input matInput placeholder="Qual o seu primeiro nome?" ng-model="data.nome" />
     </mat-form-field>
-    <button mat-raised-button (click)="verify()" color="accent">Pick one</button>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Fechar</button>
+      <button mat-button [mat-dialog-close]="data.nome" cdkFocusInitial>Ok</button>
+    </div>
   </mat-card-content>
 </mat-card>

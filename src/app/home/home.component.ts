@@ -14,8 +14,10 @@ import { map, filter } from 'rxjs/operators';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public voters: Voters = new Voters(); 
+  public voters: Voters = new Voters();
+
   constructor(public dialog: MatDialog,
+    public votersService: VotersService,
     public route: Router) {
   }
 
@@ -23,11 +25,19 @@ export class HomeComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       width: '250px',
-      data: {}
+      data: { nome: this.voters.name }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-     
+    console.log("result=====================>",result)
+    if (result != null) {
+        let voter = this.votersService.ReadJsonVoters().pipe(
+          filter(n => n.name === result)
+        )
+        alert(voter)
+        if (voter != null)
+          this.route.navigate(['vote-zone']);
+      }
     },
       error => {
 
@@ -50,26 +60,11 @@ export class HomeComponent implements OnInit {
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog-overview-example-dialog.html',
 })
-
 export class DialogOverviewExampleDialog {
-  public voter: Voters = new Voters();
+
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: Voters,
-     public route: Router,
-    public votersService: VotersService) { }
-
-  verify() { 
-    
-    if (this.voter.name != null) {
-      let voter = this.votersService.ReadJsonVoters().pipe(
-        filter(n => n.name === this.voter.name)
-      )
-      alert(voter)
-      if (voter != null)
-         this.route.navigate(['vote-zone']);
-    }
-  }
+    @Inject(MAT_DIALOG_DATA) public data: Voters) {}
 
   onNoClick(): void {
     this.dialogRef.close();
