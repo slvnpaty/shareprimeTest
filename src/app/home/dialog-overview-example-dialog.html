@@ -1,11 +1,13 @@
 <mat-card>
   <mat-card-content>
     <mat-form-field>
-      <input matInput placeholder="Qual o seu primeiro nome?" ng-model="data.name" />
+      <input matInput placeholder="Usuário:" [(ngModel)]="data.user" /><br>
+      <input matInput placeholder="Senha:" [(ngModel)]="data.password" />
+    
     </mat-form-field>
     <div mat-dialog-actions>
       <button mat-button (click)="onNoClick()">Fechar</button>
-      <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Ok</button>
+      <button mat-button  (click)="OK(data)">Ok</button>
     </div>
   </mat-card-content>
 </mat-card>

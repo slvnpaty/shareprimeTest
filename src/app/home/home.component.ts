@@ -1,10 +1,9 @@
-import {Component, Inject} from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { Form } from '@angular/forms';
 import { Router } from '@angular/router';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import{ Voters} from '../model/voters';
 
-export interface DialogData {
-  name: string;
-}
 
 /**
  * @title Dialog Overview
@@ -14,24 +13,20 @@ export interface DialogData {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent{
-  name: string;
+export class HomeComponent {
 
+  public voter:Voters = new Voters();
   constructor(public dialog: MatDialog,
-    public route: Router) {}
+    public route: Router) { }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       width: '250px',
-      data: {name: this.name}
+      data: this.voter
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed',result);
-      this.name = result;
-
-
-      
+      console.log('The dialog was closed', result);   
     });
   }
 
@@ -53,8 +48,12 @@ export class DialogOverviewExampleDialog {
 
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: Voters) { }
 
+    OK(data): void {
+    this.dialogRef.close(data);
+
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }

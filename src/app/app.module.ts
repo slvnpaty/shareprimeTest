@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-
+//Forms
+import { FormsModule }   from '@angular/forms';
 
 
 
@@ -68,7 +69,8 @@ import { CategoryService } from './service/category.service';
     MatToolbarModule,
     MatIconModule,
     MatChipsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [
     VotersService,
